@@ -1,0 +1,6 @@
+name: "Security Pipeline"
+on: [pull_request, push, workflow_dispatch]
+jobs:
+  security_pipeline:
+    uses: TrustlyInc/secops-appsec-pipeline-actions/.github/workflows/entrypoint.yml@main
+    secrets: inherit
