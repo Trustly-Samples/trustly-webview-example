@@ -1,15 +1,15 @@
-package net.trustly.inappbrowserandroid.webchromeclient
+package net.trustly.inappbrowser.jetpackcompose
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 
-class TrustlyWebChromeClientRedirectActivity : AppCompatActivity() {
+class JetpackComposeWebViewClientRedirectActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Intent(this, WebChromeClientActivity::class.java).apply {
+        Intent(this, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }.run { startActivity(this) }
         finish()

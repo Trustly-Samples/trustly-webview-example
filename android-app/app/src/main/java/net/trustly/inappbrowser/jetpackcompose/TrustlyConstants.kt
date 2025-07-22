@@ -1,4 +1,4 @@
-package net.trustly.inappbrowserandroid
+package net.trustly.inappbrowser.jetpackcompose
 
 object TrustlyConstants {
 

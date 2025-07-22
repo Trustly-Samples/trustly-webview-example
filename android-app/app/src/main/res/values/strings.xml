@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">InAppBrowserAndroid</string>
+    <string name="app_name">InAppBrowserJetpackCompose</string>
     <string name="webchrome_client">WebChromeClient</string>
     <string name="webview_client">WebViewClient</string>
 </resources>
