@@ -18,6 +18,6 @@ The `android-app` directory contains a simple Kotlin app that renders a Webview 
 
 # Contributing
 
-You can participate in this project by submitting bugs and feature requests in the [Issues](https://github.com/TrustlyInc/trustly-webview-example/issues) tab. Please, add [@lukevance](https://github.com/lukevance) as an assignee.
+You can participate in this project by submitting bugs and feature requests in the [Issues](https://github.com/TrustlyInc/trustly-webview-example/issues) tab.
 
-If you are interested in fixing issues and contributing directly to the code base, feel free to open a Pull Request with your changes. Please, make sure to fulfill our [Pull Request Template](https://github.com/TrustlyInc/trustly-webview-example/blob/main/.github/pull_request_template.md) and add [@lukevance](https://github.com/lukevance) as code reviewer.
+If you are interested in fixing issues and contributing directly to the code base, feel free to open a Pull Request with your changes. Please, make sure to fulfill our [Pull Request Template](https://github.com/TrustlyInc/trustly-webview-example/blob/main/.github/pull_request_template.md).
