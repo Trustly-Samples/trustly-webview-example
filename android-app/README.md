@@ -80,6 +80,7 @@ In your custom web view you need to create a CustomTabIntent to open the url:
 ```kotlin
     private fun launchUrl(context: Context, url: String) {
         val customTabsIntent = CustomTabsIntent.Builder().build()
+        customTabsIntent.intent.setPackage("com.android.chrome")
         customTabsIntent.launchUrl(context, Uri.parse(url))
     }
 ```

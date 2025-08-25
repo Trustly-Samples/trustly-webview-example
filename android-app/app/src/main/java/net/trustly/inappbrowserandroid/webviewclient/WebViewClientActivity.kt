@@ -2,12 +2,12 @@ package net.trustly.inappbrowserandroid.webviewclient
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.net.toUri
 import net.trustly.inappbrowserandroid.TrustlyConstants
 import net.trustly.inappbrowserandroid.WebViewBaseActivity
 
@@ -49,7 +49,7 @@ class WebViewClientActivity : WebViewBaseActivity() {
     private fun launchUrl(context: Context, url: String) {
         val customTabsIntent = CustomTabsIntent.Builder().build()
         customTabsIntent.intent.setPackage("com.android.chrome")
-        customTabsIntent.launchUrl(context, Uri.parse(url))
+        customTabsIntent.launchUrl(context, url.toUri())
     }
 
 }
