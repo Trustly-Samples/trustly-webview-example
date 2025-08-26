@@ -46,18 +46,23 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     
     // MARK: Actions
     @IBAction func openWidget(_ sender: Any) {
+        
+        if let url = buildUrl(showWidget: true) {
+            buildASWebAuthenticationSession(url: url, callbackURL: urlScheme)
+        }
     }
     
     
     @IBAction func openLightbox(_ sender: Any) {
+        if let url = buildUrl() {
+            buildASWebAuthenticationSession(url: url, callbackURL: urlScheme)
         }
     }
 
+    // MARK: oAUTH
     private func buildASWebAuthenticationSession(url: URL, callbackURL: String){
         webSession = ASWebAuthenticationSession(url: url, callbackURLScheme: callbackURL, completionHandler: { (url, error) in
-
-            self.proceedToChooseAccount()
-
+            // TODO: CLOSE ASWebAuthenticationSession
         })
 
         webSession.prefersEphemeralWebBrowserSession = true
@@ -65,6 +70,14 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         webSession.start()
     }
     
+    // MARK: Helper functions
+    private func buildUrl(showWidget: Bool = false) -> URL? {
+        let establishDotNotation = EstablishDataUtils.normalizeEstablishWithDotNotation(establish: self.establishData)
+        let establishBase64 = JSONUtils.getJsonBase64From(dictionary: establishDotNotation) ?? ""
+        
+        let baseUrl = "https://sandbox.paywithmybank.com/frontend/mobile/establish?widget=\(showWidget)&token=\(establishBase64)"
+        
+        return URL(string: baseUrl)
         
     }
 
