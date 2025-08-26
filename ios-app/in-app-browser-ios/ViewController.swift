@@ -14,84 +14,58 @@ import SafariServices
 
 class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     
-    private let OBSERVER_NAME = "appInterface"
-    private var webView: WKWebView!
+    private var establishData: [String: String] = [:]
+    private let urlScheme = "in-app-browser-ios"
     private var webSession: ASWebAuthenticationSession!
-
-    
-    private func createNotifications(){
-        NotificationCenter.default.addObserver(self, selector: #selector(closeInAppBrowser), name: .trustlyCloseInAppBrowser, object: nil)
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.createNotifications()
-        
-        // the url of your web app
-        let url = URL(string: "http://localhost:3000?integrationContext=InAppBrowser&urlScheme=in-app-browser-ios")!
-        let reqApp = URLRequest(url: url);
 
-        self.webView = WKWebView(
-           frame: self.view.bounds,
-           configuration: self.getWKWebViewConfiguration()
-        )
-        
-        webView.navigationDelegate = self
-        webView.uiDelegate = self
-        webView.load(reqApp)
-        self.view.addSubview(self.webView)
+        self.establishData = [
+            "accessId": "A48B73F694C4C8EE6306",
+            "merchantId" : "110005514",
+            "currency" : "USD",
+            "amount" : "1.00",
+            "merchantReference" : "cac73df7-52b4-47d7-89d3-9628d4cfb65e",
+            "paymentType" : "Retrieval",
+            "returnUrl": "/returnUrl",
+            "cancelUrl": "/cancelUrl",
+            "requestSignature": "HT5mVOqBXa8ZlvgX2USmPeLns5o=",
+            "customer.name": "John",
+            "customer.address.country": "US",
+            "theme": "dark",
+            "metadata.theme": "dark",
+            "metadata.urlScheme": "\(urlScheme)://",
+            "metadata.integrationContext": "InAppBrowser",
+            "description": "First Data Mobile Test",
+            "flowType": "",
+            "env": "sandbox",
+            "envHost": "192.168.0.13"
+        ]
     }
     
-    private func getWKWebViewConfiguration() -> WKWebViewConfiguration {
-        let userController = WKUserContentController()
-        let configuration = WKWebViewConfiguration()
-        let wkPreferences = WKPreferences()
-        wkPreferences.javaScriptCanOpenWindowsAutomatically = true
-        configuration.preferences = wkPreferences
-        configuration.userContentController = userController
-        return configuration
+    // MARK: Actions
+    @IBAction func openWidget(_ sender: Any) {
     }
     
-    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-
-        if navigationAction.targetFrame == nil, let url = navigationAction.request.url {
-          if url.description.lowercased().range(of: "/oauth/login") != nil {
-
-              if #available(iOS 13, *) {
-                  self.buildASWebAuthenticationSession(url: url, callbackURL: "in-app-browser-ios")
-
-              } else {
-                  // handle iOS =<12 with SFAuthenticationSession
-              }
-          }
+    
+    @IBAction func openLightbox(_ sender: Any) {
         }
-
-        return nil
     }
-    
+
     private func buildASWebAuthenticationSession(url: URL, callbackURL: String){
         webSession = ASWebAuthenticationSession(url: url, callbackURLScheme: callbackURL, completionHandler: { (url, error) in
 
             self.proceedToChooseAccount()
 
         })
-        
+
         webSession.prefersEphemeralWebBrowserSession = true
         webSession.presentationContextProvider = self
         webSession.start()
     }
     
-    @objc func closeInAppBrowser(notification: Notification){
-        if webSession != nil {
-            webSession.cancel()
-        }
         
-        self.proceedToChooseAccount()
     }
-    
-    private func proceedToChooseAccount(){
-        self.webView.evaluateJavaScript("window.Trustly.proceedToChooseAccount();", completionHandler: nil)
-    }
-}
 
+}

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1584596A2E5E6191008111E9 /* JSONUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158459692E5E618B008111E9 /* JSONUtils.swift */; };
+		1584596C2E5E636C008111E9 /* EstablishDataUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1584596B2E5E635E008111E9 /* EstablishDataUtils.swift */; };
 		A5C539A5296F3208008C2E69 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C539A4296F3208008C2E69 /* Extensions.swift */; };
 		A695061624F56AEF00C186AE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A695061524F56AEF00C186AE /* AppDelegate.swift */; };
 		A695061824F56AEF00C186AE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A695061724F56AEF00C186AE /* SceneDelegate.swift */; };
@@ -18,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		158459692E5E618B008111E9 /* JSONUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONUtils.swift; sourceTree = "<group>"; };
+		1584596B2E5E635E008111E9 /* EstablishDataUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstablishDataUtils.swift; sourceTree = "<group>"; };
 		A5C539A4296F3208008C2E69 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		A695061224F56AEF00C186AE /* in-app-browser-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "in-app-browser-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A695061524F56AEF00C186AE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -42,6 +46,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		158459682E5E6183008111E9 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				1584596B2E5E635E008111E9 /* EstablishDataUtils.swift */,
+				158459692E5E618B008111E9 /* JSONUtils.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		A5C539A3296F31CF008C2E69 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -70,6 +83,7 @@
 		A695061424F56AEF00C186AE /* in-app-browser-ios */ = {
 			isa = PBXGroup;
 			children = (
+				158459682E5E6183008111E9 /* Utils */,
 				A5C539A3296F31CF008C2E69 /* Extensions */,
 				A695061524F56AEF00C186AE /* AppDelegate.swift */,
 				A695061724F56AEF00C186AE /* SceneDelegate.swift */,
@@ -163,6 +177,8 @@
 			files = (
 				A695061A24F56AEF00C186AE /* ViewController.swift in Sources */,
 				A695061624F56AEF00C186AE /* AppDelegate.swift in Sources */,
+				1584596A2E5E6191008111E9 /* JSONUtils.swift in Sources */,
+				1584596C2E5E636C008111E9 /* EstablishDataUtils.swift in Sources */,
 				A695061824F56AEF00C186AE /* SceneDelegate.swift in Sources */,
 				A5C539A5296F3208008C2E69 /* Extensions.swift in Sources */,
 			);
