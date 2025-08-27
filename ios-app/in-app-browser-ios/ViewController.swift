@@ -6,13 +6,9 @@
 
 import Foundation
 import UIKit
-import WebKit
 import AuthenticationServices
-// necessary for compatibility with iOS 12 and under
-import SafariServices
 
-
-class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
+class ViewController: UIViewController {
     
     private var establishData: [String: String] = [:]
     private let urlScheme = "in-app-browser-ios"
