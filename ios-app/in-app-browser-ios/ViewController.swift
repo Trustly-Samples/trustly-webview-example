@@ -32,7 +32,6 @@ class ViewController: UIViewController {
             "theme": "dark",
             "metadata.theme": "dark",
             "metadata.urlScheme": "\(urlScheme)://",
-            "metadata.integrationContext": "InAppBrowser",
             "description": "First Data Mobile Test",
             "flowType": "",
             "env": "sandbox",
