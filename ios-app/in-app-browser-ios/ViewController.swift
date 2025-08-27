@@ -11,22 +11,22 @@ import AuthenticationServices
 class ViewController: UIViewController {
     
     private var establishData: [String: String] = [:]
-    private let urlScheme = "in-app-browser-ios"
+    private let urlScheme = "in-app-browser-ios" // YOUR APP URL SCHEME
     private var webSession: ASWebAuthenticationSession!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.establishData = [
-            "accessId": "A48B73F694C4C8EE6306",
-            "merchantId" : "110005514",
+            "accessId": "<ACCESS_ID>",
+            "merchantId" : "<MERCHANT_ID>",
             "currency" : "USD",
             "amount" : "1.00",
-            "merchantReference" : "cac73df7-52b4-47d7-89d3-9628d4cfb65e",
+            "merchantReference" : "<MERCHANT_REFERENCE>",
             "paymentType" : "Retrieval",
             "returnUrl": "\(urlScheme)://",
             "cancelUrl": "\(urlScheme)://",
-            "requestSignature": "HT5mVOqBXa8ZlvgX2USmPeLns5o=",
+            "requestSignature": "<REQUEST_SIGNATURE>",
             "customer.name": "John",
             "customer.address.country": "US",
             "theme": "dark",
@@ -34,8 +34,8 @@ class ViewController: UIViewController {
             "metadata.urlScheme": "\(urlScheme)://",
             "description": "First Data Mobile Test",
             "flowType": "",
-            "env": "sandbox",
-            "envHost": "192.168.0.13"
+            "env": "<[int, sandbox, local]>",
+            "localUrl": "<YOUR LOCAL URL WHEN `ENV` PROPERTY IS `LOCAL` (ex: https://192.168.0.30)>"
         ]
     }
     
