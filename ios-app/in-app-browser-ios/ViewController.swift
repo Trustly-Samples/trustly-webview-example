@@ -24,8 +24,8 @@ class ViewController: UIViewController {
             "amount" : "1.00",
             "merchantReference" : "cac73df7-52b4-47d7-89d3-9628d4cfb65e",
             "paymentType" : "Retrieval",
-            "returnUrl": "/returnUrl",
-            "cancelUrl": "/cancelUrl",
+            "returnUrl": "\(urlScheme)://",
+            "cancelUrl": "\(urlScheme)://",
             "requestSignature": "HT5mVOqBXa8ZlvgX2USmPeLns5o=",
             "customer.name": "John",
             "customer.address.country": "US",
@@ -58,7 +58,14 @@ class ViewController: UIViewController {
     // MARK: oAUTH
     private func buildASWebAuthenticationSession(url: URL, callbackURL: String){
         webSession = ASWebAuthenticationSession(url: url, callbackURLScheme: callbackURL, completionHandler: { (url, error) in
-            // TODO: CLOSE ASWebAuthenticationSession
+
+            if url == nil {
+                self.showAlertWith(success: false)
+                
+            } else {
+                self.showAlertWith(success: true)
+                
+            }
         })
 
         webSession.prefersEphemeralWebBrowserSession = true
@@ -75,6 +82,26 @@ class ViewController: UIViewController {
         
         return URL(string: baseUrl)
         
+    }
+    
+    private func showAlertWith(success: Bool) {
+        
+        var message = ""
+        
+        if success {
+            message = "Authorization successful!"
+            
+        } else {
+            message = "Autorization failed!"
+            
+        }
+        
+        let alertMessagePopUpBox = UIAlertController(title: "Authorization", message: message, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "OK", style: .default)
+        
+        alertMessagePopUpBox.addAction(okButton)
+        
+        self.present(alertMessagePopUpBox, animated: true)
     }
 
 }
