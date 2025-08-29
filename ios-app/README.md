@@ -91,7 +91,7 @@ After that will be necessary extends the `ASWebAuthenticationPresentationContext
 And finally, you can implement the method to create the OAuth behavior.
 
 ```swift
-    let webSession = ASWebAuthenticationSession(url: url, callbackURLScheme: calbackURL, completionHandler: { (url, error) in
+    let webSession = ASWebAuthenticationSession(url: url, callbackURLScheme: callbackURL, completionHandler: { (url, error) in
             //TODO: add your custom behavior here
         })
     
