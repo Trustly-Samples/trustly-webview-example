@@ -57,6 +57,9 @@
                 <data android:scheme="web-chrome-client-redirect" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".InAppBrowserActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

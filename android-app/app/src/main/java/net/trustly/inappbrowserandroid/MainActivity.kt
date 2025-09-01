@@ -10,14 +10,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val webViewClientButton = findViewById<Button>(R.id.widgetButton)
-        webViewClientButton.setOnClickListener {
-            //TODO Open widget
+        val widgetButton = findViewById<Button>(R.id.widgetButton)
+        widgetButton.setOnClickListener {
+            startActivity(InAppBrowserActivity.startIntent(this))
         }
 
-        val webViewChromeButton = findViewById<Button>(R.id.lightboxButton)
-        webViewChromeButton.setOnClickListener {
-            //TODO Open lightbox
+        val lightboxButton = findViewById<Button>(R.id.lightboxButton)
+        lightboxButton.setOnClickListener {
+            startActivity(InAppBrowserActivity.startIntent(this, true))
         }
     }
 
