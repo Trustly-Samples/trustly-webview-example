@@ -14,7 +14,7 @@ The `ios-app` directory contains a simple Swift app that renders a Webview of a 
 
 ## The Android App
 
-The `android-app` directory contains a simple Swift app that renders a oAuth web authentication session component. Additional instructions can be found in that directory's [ReadMe](./ios-app/README.md).
+The `android-app` directory contains a simple Android Kotlin app that renders a oAuth web authentication session component. Additional instructions can be found in that directory's [ReadMe](./android-app/README.md).
 
 # Contributing
 
