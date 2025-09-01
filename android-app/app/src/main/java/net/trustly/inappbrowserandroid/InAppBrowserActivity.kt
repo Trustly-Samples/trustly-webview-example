@@ -13,8 +13,8 @@ class InAppBrowserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val openLightboxDirectly = intent.getBooleanExtra(OPEN_LIGHTBOX_DIRECTLY, false)
-        val establishData = JsonUtil.getJsonFromParameters(getEstablishDataValues(this))
-        val establishDataBase64 = JsonUtil.encodeStringToBase64(establishData)
+        val establishData = JSONUtils.getJsonFromParameters(getEstablishDataValues(this))
+        val establishDataBase64 = JSONUtils.encodeStringToBase64(establishData)
         val url =
             "https://sandbox.paywithmybank.com/frontend/mobile/establish?widget=$openLightboxDirectly&token=$establishDataBase64"
         launchUrl(this, url)

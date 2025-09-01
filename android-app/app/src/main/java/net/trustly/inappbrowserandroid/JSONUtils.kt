@@ -4,7 +4,7 @@ import android.util.Base64
 import com.google.gson.JsonObject
 import java.nio.charset.StandardCharsets
 
-object JsonUtil {
+object JSONUtils {
 
     private const val SEPARATOR: String = "\\."
 
