@@ -2,4 +2,5 @@
     <string name="app_name">InAppBrowserAndroid</string>
     <string name="widget">Widget + Lightbox</string>
     <string name="lightbox">Lightbox</string>
+    <string name="url_scheme">in-app-browser-android</string>
 </resources>
