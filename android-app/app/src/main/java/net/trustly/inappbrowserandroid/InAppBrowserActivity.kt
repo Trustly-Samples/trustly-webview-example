@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.net.toUri
 
 class InAppBrowserActivity : AppCompatActivity() {
 
@@ -13,6 +15,12 @@ class InAppBrowserActivity : AppCompatActivity() {
 
         val openLightboxDirectly = intent.getBooleanExtra(OPEN_LIGHTBOX_DIRECTLY, false)
         Toast.makeText(this, "Open Lightbox: $openLightboxDirectly", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun launchUrl(context: Context, url: String) {
+        val customTabsIntent = CustomTabsIntent.Builder().build()
+        customTabsIntent.intent.setPackage("com.android.chrome")
+        customTabsIntent.launchUrl(context, url.toUri())
     }
 
     companion object {

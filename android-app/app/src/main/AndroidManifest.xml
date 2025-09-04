@@ -23,14 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".WebViewBaseActivity"
-            android:exported="true" />
-        <!-- WebViewClient -->
-        <activity
-            android:name=".webviewclient.WebViewClientActivity"
-            android:exported="true" />
-        <activity
-            android:name=".webviewclient.TrustlyWebViewClientRedirectActivity"
+            android:name=".RedirectActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -38,23 +31,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="web-view-client-redirect" />
-            </intent-filter>
-        </activity>
-        <!-- WebChromeClient -->
-        <activity
-            android:name=".webchromeclient.WebChromeClientActivity"
-            android:exported="true" />
-        <activity
-            android:name=".webchromeclient.TrustlyWebChromeClientRedirectActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="web-chrome-client-redirect" />
+                <data android:scheme="redirect" />
             </intent-filter>
         </activity>
         <activity
