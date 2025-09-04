@@ -31,7 +31,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="redirect" />
+                <data android:scheme="@string/url_scheme" />
             </intent-filter>
         </activity>
         <activity
