@@ -2,15 +2,14 @@ package net.trustly.inappbrowserandroid.webchromeclient
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.net.Uri
 import android.util.AttributeSet
-import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.net.toUri
 import net.trustly.inappbrowserandroid.TrustlyConstants
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -37,8 +36,8 @@ class TrustlyWebView : LinearLayout {
 
             this.layoutParams =
                 RelativeLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
+                    LayoutParams.MATCH_PARENT,
+                    LayoutParams.MATCH_PARENT
                 )
 
             this.webViewClient = object : WebViewClient() {
@@ -65,7 +64,7 @@ class TrustlyWebView : LinearLayout {
     private fun launchUrl(context: Context, url: String) {
         val customTabsIntent = CustomTabsIntent.Builder().build()
         customTabsIntent.intent.setPackage("com.android.chrome")
-        customTabsIntent.launchUrl(context, Uri.parse(url))
+        customTabsIntent.launchUrl(context, url.toUri())
     }
 
 }
