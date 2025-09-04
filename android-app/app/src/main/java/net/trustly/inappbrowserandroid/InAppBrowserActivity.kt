@@ -23,12 +23,15 @@ class InAppBrowserActivity : AppCompatActivity() {
     private fun getEstablishDataValues(context: Context): MutableMap<String, String> {
         val establishDataValues: MutableMap<String, String> = HashMap()
         establishDataValues["accessId"] = "<ACCESS_ID>"
-        establishDataValues["amount"] = "0.00"
+        establishDataValues["amount"] = "10.00"
         establishDataValues["merchantId"] = "<MERCHANT_ID>"
         establishDataValues["currency"] = "USD"
         establishDataValues["merchantReference"] = "<MERCHANT_REFERENCE>"
+        establishDataValues["requestSignature"] = "<REQUEST_SIGNATURE>"
         establishDataValues["paymentType"] = "Retrieval"
-        establishDataValues["env"] = "<[int, sandbox, local]>"
+        establishDataValues["env"] = "sandbox"
+        establishDataValues["grp"] = "<GRP>"
+        establishDataValues["paymentProviderId"] = "<PAYMENT_PROVIDER_ID>"
         establishDataValues["description"] = "Android InAppBrowser"
         establishDataValues["localUrl"] = "<YOUR LOCAL URL WHEN `ENV` PROPERTY IS `LOCAL` (ex: https://192.168.0.30)>"
         establishDataValues["customer.name"] = "John Smith Android"
@@ -40,6 +43,8 @@ class InAppBrowserActivity : AppCompatActivity() {
         establishDataValues["customer.phone"] = "2145553434"
         establishDataValues["customer.email"] = "jsmith@email.com"
         establishDataValues["metadata.urlScheme"] = context.getString(R.string.url_scheme) + "://"
+        establishDataValues["cancelUrl"] = context.getString(R.string.url_scheme) + "://"
+        establishDataValues["returnUrl"] = context.getString(R.string.url_scheme) + "://"
         return establishDataValues
     }
 
