@@ -28,8 +28,7 @@
         <!-- WebViewClient -->
         <activity
             android:name=".webviewclient.WebViewClientActivity"
-            android:exported="true"
-            android:label="@string/webview_client" />
+            android:exported="true" />
         <activity
             android:name=".webviewclient.TrustlyWebViewClientRedirectActivity"
             android:exported="true">
@@ -45,8 +44,7 @@
         <!-- WebChromeClient -->
         <activity
             android:name=".webchromeclient.WebChromeClientActivity"
-            android:exported="true"
-            android:label="@string/webchrome_client" />
+            android:exported="true" />
         <activity
             android:name=".webchromeclient.TrustlyWebChromeClientRedirectActivity"
             android:exported="true">

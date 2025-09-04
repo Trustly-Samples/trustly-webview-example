@@ -4,24 +4,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgGlobex"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/globex"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/webViewClientButton"
+        android:id="@+id/widgetButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/webview_client"
+        android:text="@string/widget"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/webViewChromeButton"
+        android:id="@+id/lightboxButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/webchrome_client"
+        android:text="@string/lightbox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/webViewClientButton" />
+        app:layout_constraintTop_toBottomOf="@+id/widgetButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
