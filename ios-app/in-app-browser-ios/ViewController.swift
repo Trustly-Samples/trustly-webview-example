@@ -29,13 +29,9 @@ class ViewController: UIViewController {
             "requestSignature": "<REQUEST_SIGNATURE>",
             "customer.name": "John",
             "customer.address.country": "US",
-            "theme": "dark",
-            "metadata.theme": "dark",
             "metadata.urlScheme": "\(urlScheme)://",
             "description": "First Data Mobile Test",
             "flowType": "",
-            "env": "<[int, sandbox, local]>",
-            "localUrl": "<YOUR LOCAL URL WHEN `ENV` PROPERTY IS `LOCAL` (ex: https://192.168.0.30)>"
         ]
     }
     
@@ -77,7 +73,11 @@ class ViewController: UIViewController {
         let establishDotNotation = EstablishDataUtils.normalizeEstablishWithDotNotation(establish: self.establishData)
         let establishBase64 = JSONUtils.getJsonBase64From(dictionary: establishDotNotation) ?? ""
         
-        let baseUrl = "https://sandbox.paywithmybank.com/frontend/mobile/establish?widget=\(showWidget)&token=\(establishBase64)"
+        // CHOOSE BETWEEN THESE ENVIRONMENTS
+        // PROD: https://trustly.one
+        // SANDBOX: https://sandbox.trustly.one
+        
+        let baseUrl = "https://sandbox.trustly.one/frontend/mobile/establish?widget=\(showWidget)&token=\(establishBase64)"
         
         return URL(string: baseUrl)
         
