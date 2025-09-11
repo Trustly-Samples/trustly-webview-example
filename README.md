@@ -10,7 +10,7 @@ The `ios-app` directory contains a simple Swift app that renders a oAuth web aut
 
 ## The Android App
 
-The `android-app` directory contains a simple Kotlin app that renders a Webview of a given URL. With the above React app running, the Android app can be pointed to the resulting URL to demonstrate the webview and secure-in-app-browser functionality required to successfully integrate the two applications. Additional instructions can be found in that directory's [ReadMe](./android-app/README.md).
+The `android-app` directory contains a simple Android Kotlin app that renders a oAuth web authentication session component. Additional instructions can be found in that directory's [ReadMe](./android-app/README.md).
 
 # Contributing
 
