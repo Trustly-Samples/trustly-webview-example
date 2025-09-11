@@ -6,92 +6,101 @@
 
 import Foundation
 import UIKit
-import WebKit
 import AuthenticationServices
-// necessary for compatibility with iOS 12 and under
-import SafariServices
 
-
-class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
+class ViewController: UIViewController {
     
-    private let OBSERVER_NAME = "appInterface"
-    private var webView: WKWebView!
+    private var establishData: [String: String] = [:]
+    private let urlScheme = "in-app-browser-ios" // YOUR APP URL SCHEME
     private var webSession: ASWebAuthenticationSession!
-
-    
-    private func createNotifications(){
-        NotificationCenter.default.addObserver(self, selector: #selector(closeInAppBrowser), name: .trustlyCloseInAppBrowser, object: nil)
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.createNotifications()
-        
-        // the url of your web app
-        let url = URL(string: "http://localhost:3000?integrationContext=InAppBrowser&urlScheme=in-app-browser-ios")!
-        let reqApp = URLRequest(url: url);
 
-        self.webView = WKWebView(
-           frame: self.view.bounds,
-           configuration: self.getWKWebViewConfiguration()
-        )
-        
-        webView.navigationDelegate = self
-        webView.uiDelegate = self
-        webView.load(reqApp)
-        self.view.addSubview(self.webView)
+        self.establishData = [
+            "accessId": "<ACCESS_ID>",
+            "merchantId" : "<MERCHANT_ID>",
+            "currency" : "USD",
+            "amount" : "1.00",
+            "merchantReference" : "<MERCHANT_REFERENCE>",
+            "paymentType" : "Retrieval",
+            "returnUrl": "\(urlScheme)://",
+            "cancelUrl": "\(urlScheme)://",
+            "requestSignature": "<REQUEST_SIGNATURE>",
+            "customer.name": "John",
+            "customer.address.country": "US",
+            "metadata.urlScheme": "\(urlScheme)://",
+            "description": "First Data Mobile Test",
+            "flowType": "",
+        ]
     }
     
-    private func getWKWebViewConfiguration() -> WKWebViewConfiguration {
-        let userController = WKUserContentController()
-        let configuration = WKWebViewConfiguration()
-        let wkPreferences = WKPreferences()
-        wkPreferences.javaScriptCanOpenWindowsAutomatically = true
-        configuration.preferences = wkPreferences
-        configuration.userContentController = userController
-        return configuration
-    }
-    
-    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-
-        if navigationAction.targetFrame == nil, let url = navigationAction.request.url {
-          if url.description.lowercased().range(of: "/oauth/login") != nil {
-
-              if #available(iOS 13, *) {
-                  self.buildASWebAuthenticationSession(url: url, callbackURL: "in-app-browser-ios")
-
-              } else {
-                  // handle iOS =<12 with SFAuthenticationSession
-              }
-          }
+    // MARK: Actions
+    @IBAction func openWidget(_ sender: Any) {
+        
+        if let url = buildUrl(showWidget: true) {
+            buildASWebAuthenticationSession(url: url, callbackURL: urlScheme)
         }
-
-        return nil
     }
     
+    
+    @IBAction func openLightbox(_ sender: Any) {
+        if let url = buildUrl() {
+            buildASWebAuthenticationSession(url: url, callbackURL: urlScheme)
+        }
+    }
+
+    // MARK: oAUTH
     private func buildASWebAuthenticationSession(url: URL, callbackURL: String){
         webSession = ASWebAuthenticationSession(url: url, callbackURLScheme: callbackURL, completionHandler: { (url, error) in
 
-            self.proceedToChooseAccount()
-
+            if url == nil {
+                self.showAlertWith(success: false)
+                
+            } else {
+                self.showAlertWith(success: true)
+                
+            }
         })
-        
+
         webSession.prefersEphemeralWebBrowserSession = true
         webSession.presentationContextProvider = self
         webSession.start()
     }
     
-    @objc func closeInAppBrowser(notification: Notification){
-        if webSession != nil {
-            webSession.cancel()
-        }
+    // MARK: Helper functions
+    private func buildUrl(showWidget: Bool = false) -> URL? {
+        let establishDotNotation = EstablishDataUtils.normalizeEstablishWithDotNotation(establish: self.establishData)
+        let establishBase64 = JSONUtils.getJsonBase64From(dictionary: establishDotNotation) ?? ""
         
-        self.proceedToChooseAccount()
+        // CHOOSE BETWEEN THESE ENVIRONMENTS
+        // PROD: https://trustly.one
+        // SANDBOX: https://sandbox.trustly.one
+        
+        let baseUrl = "https://sandbox.trustly.one/frontend/mobile/establish?widget=\(showWidget)&token=\(establishBase64)"
+        
+        return URL(string: baseUrl)
+        
     }
     
-    private func proceedToChooseAccount(){
-        self.webView.evaluateJavaScript("window.Trustly.proceedToChooseAccount();", completionHandler: nil)
+    private func showAlertWith(success: Bool) {
+        
+        var message = ""
+        
+        if success {
+            message = "Authorization successful!"
+            
+        } else {
+            message = "Autorization failed!"
+            
+        }
+        
+        let alertMessagePopUpBox = UIAlertController(title: "Authorization", message: message, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "OK", style: .default)
+        
+        alertMessagePopUpBox.addAction(okButton)
+        
+        self.present(alertMessagePopUpBox, animated: true)
     }
-}
 
+}

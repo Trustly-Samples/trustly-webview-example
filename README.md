@@ -1,16 +1,12 @@
 # Trustly Mobile Webview Example App
 
-<img src="https://user-images.githubusercontent.com/13320316/255275758-068fbcd2-b681-4fdb-a914-15ba1c875c5a.png" alt="screenshot of example app" width="250">
-
-This project is provided as an example of integration between a web app serving the Trustly UI and mobile apps that render that web app from a webview. Specifically, this example focuses on successfully handling OAuth and App-to-App bank authorization user flows. The repository can be used alongside Trustly's [Mobile App Webview tutorial](https://amer.developers.trustly.com/payments/docs/oauth-for-mobile-apps).
-
-## The Web App
-
-The `react-web-app` directory contains a simple React app that displays a "Pay with Trustly" button which launches the Lightbox. Instructions for running this app can be found in that directory's [ReadMe](./react-web-app/README.md).
+This project is provided as an example of integration without Trustly mobile SDK. Specifically, this example focuses on successfully handling OAuth and App-to-App bank authorization user flows. The repository can be used alongside Trustly's [Mobile App Webview tutorial](https://amer.developers.trustly.com/payments/docs/oauth-for-mobile-apps).
 
 ## The iOS App
 
-The `ios-app` directory contains a simple Swift app that renders a Webview of a given URL. With the above React app running, the iOS app can be pointed to the resulting URL to demonstrate the webview and secure-in-app-browser functionality required to successfully integrate the two applications. Additional instructions can be found in that directory's [ReadMe](./ios-app/README.md).
+The `ios-app` directory contains a simple Swift app that renders a oAuth web authentication session component. Additional instructions can be found in that directory's [ReadMe](./ios-app/README.md).
+
+![iOS app](resources/in-app-browser-ios-home.png "iOS App")
 
 ## The Android App
 
