@@ -52,12 +52,15 @@ In your custom web view you need to create a CustomTabIntent to open the url:
 ### RedirectActivity
 
 When the application receive some action for example `in-app-browser-android`, or the name that you defined in `urlScheme`, it will call your target Activity with some flags, and reload it.
+We added a validation for in case the return information has no transaction data, for example in the app-to-app OAuth flow.
 The example below is from `RedirectActivity`
 
 ```kotlin
-    Intent(this, MainActivity::class.java).apply {
-        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-    }.run { startActivity(this) }
+    if (intent.extras != null && intent.data!!.getQueryParameter(STATUS_PARAM) != null) {
+        Intent(this, MainActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        }.run { startActivity(this) }
+    }
     finish()
 ```
 
