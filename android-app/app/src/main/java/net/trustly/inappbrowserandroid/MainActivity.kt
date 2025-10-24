@@ -14,12 +14,12 @@ class MainActivity : AppCompatActivity() {
 
         val widgetButton = findViewById<Button>(R.id.widgetButton)
         widgetButton.setOnClickListener {
-            startActivity(InAppBrowserActivity.startIntent(this))
+            startActivity(InAppBrowserActivity.startIntent(this, true))
         }
 
         val lightboxButton = findViewById<Button>(R.id.lightboxButton)
         lightboxButton.setOnClickListener {
-            startActivity(InAppBrowserActivity.startIntent(this, true))
+            startActivity(InAppBrowserActivity.startIntent(this))
         }
     }
 

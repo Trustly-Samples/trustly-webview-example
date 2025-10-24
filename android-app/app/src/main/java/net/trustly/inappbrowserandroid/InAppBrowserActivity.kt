@@ -12,7 +12,7 @@ class InAppBrowserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val openLightboxDirectly = intent.getBooleanExtra(OPEN_LIGHTBOX_DIRECTLY, false)
+        val openWidget = intent.getBooleanExtra(OPEN_WIDGET, false)
         val establishData = JSONUtils.getJsonFromParameters(getEstablishDataValues(this))
         val establishDataBase64 = JSONUtils.encodeStringToBase64(establishData)
         val url =
@@ -56,11 +56,11 @@ class InAppBrowserActivity : AppCompatActivity() {
 
     companion object {
 
-        private const val OPEN_LIGHTBOX_DIRECTLY = "OPEN_LIGHTBOX_DIRECTLY"
+        private const val OPEN_WIDGET = "OPEN_WIDGET"
 
-        fun startIntent(context: Context, openLightboxDirectly: Boolean = false) =
+        fun startIntent(context: Context, openWidget: Boolean = false) =
             Intent(context, InAppBrowserActivity::class.java)
-                .putExtra(OPEN_LIGHTBOX_DIRECTLY, openLightboxDirectly)
+                .putExtra(OPEN_WIDGET, openWidget)
 
     }
 
