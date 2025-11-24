@@ -16,7 +16,7 @@ class InAppBrowserActivity : AppCompatActivity() {
         val establishData = JSONUtils.getJsonFromParameters(getEstablishDataValues(this))
         val establishDataBase64 = JSONUtils.encodeStringToBase64(establishData)
         val url =
-            "https://sandbox.paywithmybank.com/frontend/mobile/establish?widget=$openLightboxDirectly&token=$establishDataBase64"
+            "https://sandbox.paywithmybank.com/frontend/mobile/establish?widget=$openWidget&token=$establishDataBase64"
         launchUrl(this, url)
     }
 
