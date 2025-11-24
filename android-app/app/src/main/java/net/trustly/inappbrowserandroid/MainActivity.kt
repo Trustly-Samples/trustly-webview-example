@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
 
         val widgetButton = findViewById<Button>(R.id.widgetButton)
         widgetButton.setOnClickListener {
-            startActivity(InAppBrowserActivity.startIntent(this))
+            startActivity(InAppBrowserActivity.startIntent(this, false))
         }
 
         val lightboxButton = findViewById<Button>(R.id.lightboxButton)

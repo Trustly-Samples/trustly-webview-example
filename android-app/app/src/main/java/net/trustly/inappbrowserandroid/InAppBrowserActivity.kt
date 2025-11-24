@@ -58,7 +58,7 @@ class InAppBrowserActivity : AppCompatActivity() {
 
         private const val OPEN_LIGHTBOX_DIRECTLY = "OPEN_LIGHTBOX_DIRECTLY"
 
-        fun startIntent(context: Context, openLightboxDirectly: Boolean = false) =
+        fun startIntent(context: Context, openLightboxDirectly: Boolean) =
             Intent(context, InAppBrowserActivity::class.java)
                 .putExtra(OPEN_LIGHTBOX_DIRECTLY, openLightboxDirectly)
 
