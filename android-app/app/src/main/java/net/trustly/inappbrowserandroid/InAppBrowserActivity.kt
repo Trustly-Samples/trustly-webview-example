@@ -18,6 +18,7 @@ class InAppBrowserActivity : AppCompatActivity() {
         val url =
             "https://sandbox.paywithmybank.com/frontend/mobile/establish?widget=$openWidget&token=$establishDataBase64"
         launchUrl(this, url)
+        finish()
     }
 
     private fun getEstablishDataValues(context: Context): MutableMap<String, String> {
