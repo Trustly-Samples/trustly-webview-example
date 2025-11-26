@@ -21,10 +21,6 @@ class MainActivity : AppCompatActivity() {
         lightboxButton.setOnClickListener {
             startActivity(InAppBrowserActivity.startIntent(this))
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
 
         if (intent.hasExtra(ESTABLISH_DATA)) {
             val establishDataValues =
