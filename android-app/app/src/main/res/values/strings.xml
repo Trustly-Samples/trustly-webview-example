@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">InAppBrowserAndroid</string>
-    <string name="webchrome_client">WebChromeClient</string>
-    <string name="webview_client">WebViewClient</string>
+    <string name="widget">Widget + Lightbox</string>
+    <string name="lightbox">Lightbox</string>
+    <string name="url_scheme">in-app-browser-android</string>
 </resources>

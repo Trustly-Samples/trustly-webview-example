@@ -7,70 +7,34 @@ This app demo has a propose to demonstrate how to implement the oauth authentica
 
 `Chrome Custom Tabs` has no method to close itself, and this implementation is based on redirecting to previous Activity, by Intent flags, finishing the called Activity with registered scheme.
 
-
 ## Introduction
 
 These are some example how to implement a sign-in on OAuth flow to use Trustly JavaScript SDK.
 The code is using Kotlin language implementation.
 
-## WebClient
+To open Trustly widget or lightbox we need to build an url with a `token`. This `token` is the `establish data` in `base 64` format.
 
-There are two ways to create web clients for a WebView, `WebViewClient` and `WebChromeClient`.
+### Building url
+The base url is `https://sandbox.paywithmybank.com/frontend/mobile/establish`.
 
-### WebViewClient implementation
-
-Using `WebViewClient` you'll need to add a configuration in the `settings` property.
-Set the `javaScriptCanOpenWindowsAutomatically` property to true in order to enable the application to properly handle `window.open` events.
+`Establish data` is a dictionary with all parameters to create a transaction, to transform `establish data` to `base 64` format we should convert the dicitionary in a `json string` and after that create the `base 64` value.
 
 ```kotlin
-    webView.settings.apply {
-        javaScriptCanOpenWindowsAutomatically = true
-    }
+val establishData = JSONUtils.getJsonFromParameters(getEstablishDataValues(this))
+val establishDataBase64 = JSONUtils.encodeStringToBase64(establishData)
 ```
 
-Using `WebViewClient` you can override many methods, but you need to implement the `shouldOverrideUrlLoading` method. This method determines what will happen when a URL is loaded in WebView.
-The example below is a simple implementation that calls the method which opens the CustomTabs.
+The `JSONUtils` class, is a custom class created by Trustly, you can check the content in the file `JSONUtils.kt`.
+
+In the url, you can send the `widget` parameter, to ask to open the `widget` if the `true`, or the lightbox, if `false`.
+
+The complete url with `base 64` `token` and `widget` parameter as `true`.
 
 ```kotlin
-    webView.webViewClient = object : WebViewClient() {
-        override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-            val url = request.url.toString()
-            if (url.contains(TrustlyConstants.OAUTH_LOGIN_PATH))
-                launchUrl(this@WebViewClientActivity, url)
-            return true
-        }
-    }
+https://sandbox.paywithmybank.com/frontend/mobile/establish?widget=true&token=eyJhY2Nlc3NJZCI6IkE0OEI3M0Y2OTRDNEM4RUU2MzA2IiwicGF5bWVudFR5cGUiOiJSZXRyaWV2YWwiLCJmbG93VHlwZSI6IiIsIm1ldGFkYXRhIjp7InNka0lPU1ZlcnNpb24iOiIzLjMuMCIsInVybFNjaGVtZSI6ImRlbW9hcHA6XC9cLyIsImNpZCI6IjEwRjYtNENFQy1NRVQwWERIUSIsInRoZW1lIjoiZGFyayJ9LCJzZXNzaW9uQ2lkIjoiMTBGNi00NDFBLU1FVDBCV0c0IiwicmV0dXJuVXJsIjoiZGVtb2FwcDpcL1wvIiwicmVxdWVzdFNpZ25hdHVyZSI6IkhUNW1WT3FCWGE4Wmx2Z1gyVVNtUGVMbnM1bz0iLCJ0aGVtZSI6ImRhcmsiLCJ2ZXJzaW9uIjoiMiIsImVudiI6InNhbmRib3giLCJjdXJyZW5jeSI6IlVTRCIsIm1lcmNoYW50SWQiOiIxMTAwMDU1MTQiLCJjYW5jZWxVcmwiOiJkZW1vYXBwOlwvXC8iLCJtZXJjaGFudFJlZmVyZW5jZSI6ImNhYzczZGY3LTUyYjQtNDdkNy04OWQzLTk2MjhkNGNmYjY1ZSIsImVudkhvc3QiOiIxOTIuMTY4LjAuMTMiLCJwYXltZW50UHJvdmlkZXJJZCI6IjIwMDAwNTUwMSIsImdycCI6IjE4Iiwid2lkZ2V0TG9hZGVkIjoidHJ1ZSIsImN1c3RvbWVyIjp7ImFkZHJlc3MiOnsiY291bnRyeSI6IlVTIn0sIm5hbWUiOiJKb2huIn0sImRldmljZVR5cGUiOiJtb2JpbGU6aW9zOm5hdGl2ZSIsImFtb3VudCI6IjEwLjAwIiwiZGVzY3JpcHRpb24iOiJGaXJzdCBEYXRhIE1vYmlsZSBUZXN0In0=
 ```
 
-### WebChromeClient implementation
-
-Using `WebChromeClient` you'll need to create your own WebView, add some configuration in the `settings` property, and transport itself to a custom WebView.
-The example below explain more about those implementation. First you need to add both `javaScriptCanOpenWindowsAutomatically` and `setSupportMultipleWindows(true)`, they are needed to listen the `window.open` method.
-
-```kotlin
-    webView.settings.apply {
-        javaScriptCanOpenWindowsAutomatically = true
-        setSupportMultipleWindows(true)
-    }
-```
-
-This is the `WebChromeClient` implementation, using a custom WebView to transport the URL and than open it inside that.
-The `trustlyWebView` is an instance of the custom WebView, which has the same implementation of a `WebViewClient`.
-
-```kotlin
-    webView.webChromeClient = object : WebChromeClient() {
-        override fun onCreateWindow(view: WebView, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message): Boolean {
-            return if (view.hitTestResult.type == 0) {
-                //window.open
-                webView.addView(trustlyWebView)
-                val transport = resultMsg.obj as WebViewTransport
-                transport.webView = trustlyWebView.webView
-                resultMsg.sendToTarget()
-                true
-            } else false
-        }
-    }
-```
+After built Trustly url, now, you can open widget or lightbox with oAuth component.
 
 ### CustomTabsIntent
 
@@ -80,19 +44,23 @@ In your custom web view you need to create a CustomTabIntent to open the url:
 ```kotlin
     private fun launchUrl(context: Context, url: String) {
         val customTabsIntent = CustomTabsIntent.Builder().build()
+        customTabsIntent.intent.setPackage("com.android.chrome")
         customTabsIntent.launchUrl(context, Uri.parse(url))
     }
 ```
 
-### TrustlyWebChromeClientRedirectActivity and TrustlyWebViewClientRedirectActivity
+### RedirectActivity
 
-When the application receive some action for example `web-chrome-client-redirect`, or the name that you defined in `urlScheme`, it will call your target Activity with some flags, and reload it.
-The example below is from `TrustlyWebChromeClientRedirectActivity`
+When the application receive some action for example `in-app-browser-android`, or the name that you defined in `urlScheme`, it will call your target Activity with some flags, and reload it.
+We added a validation for in case the return information has no transaction data, for example in the app-to-app OAuth flow.
+The example below is from `RedirectActivity`
 
 ```kotlin
-    Intent(this, WebChromeClientActivity::class.java).apply {
-        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-    }.run { startActivity(this) }
+    if (intent.extras != null && intent.data!!.getQueryParameter(STATUS_PARAM) != null) {
+        Intent(this, MainActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        }.run { startActivity(this) }
+    }
     finish()
 ```
 
@@ -100,21 +68,13 @@ The example below is from `TrustlyWebChromeClientRedirectActivity`
 
 ```xml
     <activity
-    android:name=".TrustlyWebChromeClientRedirectActivity"
+    android:name=".RedirectActivity"
     android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="web-chrome-client-redirect" />
+            <data android:scheme="@string/url_scheme" />
         </intent-filter>
     </activity>
-```
-
-### ProceedToChooseAccount
-
-Finally, in order to support a smooth user experience when an OAuth login authorization is completed and the user returns to the Lightbox, call this function using some code like this:
-
-```kotlin
-    webView.loadUrl("javascript:window.Trustly.proceedToChooseAccount();")
 ```

@@ -6,92 +6,149 @@
 
 import Foundation
 import UIKit
-import WebKit
 import AuthenticationServices
-// necessary for compatibility with iOS 12 and under
 import SafariServices
 
-
-class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
+class ViewController: UIViewController, SFSafariViewControllerDelegate {
     
-    private let OBSERVER_NAME = "appInterface"
-    private var webView: WKWebView!
+    private var establishData: [String: String] = [:]
+    private let urlScheme = "in-app-browser-ios" // YOUR APP URL SCHEME
     private var webSession: ASWebAuthenticationSession!
-
-    
-    private func createNotifications(){
-        NotificationCenter.default.addObserver(self, selector: #selector(closeInAppBrowser), name: .trustlyCloseInAppBrowser, object: nil)
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.createNotifications()
-        
-        // the url of your web app
-        let url = URL(string: "http://localhost:3000?integrationContext=InAppBrowser&urlScheme=in-app-browser-ios")!
-        let reqApp = URLRequest(url: url);
 
-        self.webView = WKWebView(
-           frame: self.view.bounds,
-           configuration: self.getWKWebViewConfiguration()
-        )
-        
-        webView.navigationDelegate = self
-        webView.uiDelegate = self
-        webView.load(reqApp)
-        self.view.addSubview(self.webView)
+        // Retrieve stored trustlyContext
+        let storedTrustlyContext = getStoredTrustlyContext()
+
+        self.establishData = [
+            "accessId": "A48B73F694C4C8EE6306",
+            "merchantId" : "110005514",
+            "currency" : "USD",
+            "amount" : "1.00",
+            "merchantReference" : "MERCHANT_REFERENCE",
+            "paymentType" : "Retrieval",
+            "returnUrl": "\(urlScheme)://success",
+            "cancelUrl": "\(urlScheme)://cancel",
+            "requestSignature": "REQUEST_SIGNATURE",
+            "customer.name": "John",
+            "customer.address.country": "US",
+            "metadata.urlScheme": "\(urlScheme)://",
+            "metadata.trustlyContext": storedTrustlyContext,
+            "description": "First Data Mobile Test",
+            "flowType": "",
+        ]
     }
     
-    private func getWKWebViewConfiguration() -> WKWebViewConfiguration {
-        let userController = WKUserContentController()
-        let configuration = WKWebViewConfiguration()
-        let wkPreferences = WKPreferences()
-        wkPreferences.javaScriptCanOpenWindowsAutomatically = true
-        configuration.preferences = wkPreferences
-        configuration.userContentController = userController
-        return configuration
-    }
-    
-    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-
-        if navigationAction.targetFrame == nil, let url = navigationAction.request.url {
-          if url.description.lowercased().range(of: "/oauth/login") != nil {
-
-              if #available(iOS 13, *) {
-                  self.buildASWebAuthenticationSession(url: url, callbackURL: "in-app-browser-ios")
-
-              } else {
-                  // handle iOS =<12 with SFAuthenticationSession
-              }
-          }
+    // MARK: Actions
+    @IBAction func openWidget(_ sender: Any) {
+        
+        if let url = buildUrl(showWidget: true) {
+            buildASWebAuthenticationSession(url: url, callbackURL: urlScheme)
         }
-
-        return nil
     }
     
+    
+    @IBAction func openLightbox(_ sender: Any) {
+        if let url = buildUrl() {
+            buildASWebAuthenticationSession(url: url, callbackURL: urlScheme)
+        }
+    }
+
     private func buildASWebAuthenticationSession(url: URL, callbackURL: String){
         webSession = ASWebAuthenticationSession(url: url, callbackURLScheme: callbackURL, completionHandler: { (url, error) in
 
-            self.proceedToChooseAccount()
-
+            if let urlString = url?.absoluteString {
+                // Extract and save trustlyContext from URL
+                self.extractAndSaveTrustlyContext(from: urlString)
+                
+                if urlString.contains("success") {
+                    self.showAlertWith(success: true)
+                } else if urlString.contains("cancel") {
+                    self.showAlertWith(success: false)
+                } else {
+                    self.showAlertWith(success: false)
+                }
+            } else {
+                self.showAlertWith(success: false)
+            }
         })
-        
+
         webSession.prefersEphemeralWebBrowserSession = true
         webSession.presentationContextProvider = self
         webSession.start()
     }
     
-    @objc func closeInAppBrowser(notification: Notification){
-        if webSession != nil {
-            webSession.cancel()
-        }
-        
-        self.proceedToChooseAccount()
+    
+    // MARK: Helper functions
+    
+    /// Update establishData with current trustlyContext
+    private func updateEstablishData() {
+        let storedTrustlyContext = getStoredTrustlyContext()
+        self.establishData["metadata.trustlyContext"] = storedTrustlyContext
+        print("EstablishData updated with trustlyContext: \(storedTrustlyContext)")
     }
     
-    private func proceedToChooseAccount(){
-        self.webView.evaluateJavaScript("window.Trustly.proceedToChooseAccount();", completionHandler: nil)
+    /// Extract trustlyContext parameter from URL and save to UserDefaults
+    private func extractAndSaveTrustlyContext(from urlString: String) {
+        guard let url = URL(string: urlString),
+              let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              let queryItems = components.queryItems else {
+            return
+        }
+        
+        // Look for trustlyContext parameter
+        if let trustlyContextItem = queryItems.first(where: { $0.name == "trustlyContext" }),
+           let trustlyContextValue = trustlyContextItem.value {
+            
+            // Save to UserDefaults
+            UserDefaults.standard.set(trustlyContextValue, forKey: "trustlyContext")
+            print("TrustlyContext saved: \(trustlyContextValue)")
+            
+            // Update establishData with the new trustlyContext
+            self.establishData["metadata.trustlyContext"] = trustlyContextValue
+        }
     }
-}
+    
+    /// Retrieve trustlyContext from UserDefaults
+    private func getStoredTrustlyContext() -> String {
+        return UserDefaults.standard.string(forKey: "trustlyContext") ?? "new"
+    }
+    
+    private func buildUrl(showWidget: Bool = false) -> URL? {
+        // Update establishData with current trustlyContext before building URL
+        updateEstablishData()
+        
+        let establishDotNotation = EstablishDataUtils.normalizeEstablishWithDotNotation(establish: self.establishData)
+        let establishBase64 = JSONUtils.getJsonBase64From(dictionary: establishDotNotation) ?? ""
+        
+        // CHOOSE BETWEEN THESE ENVIRONMENTS
+        // PROD: https://trustly.one
+        // SANDBOX: https://sandbox.trustly.one
+        
+        let baseUrl = "http://122.132.142.28:10000/frontend/mobile/establish?widget=\(showWidget)&token=\(establishBase64)"
+        
+        return URL(string: baseUrl)
+        
+    }
+    
+    private func showAlertWith(success: Bool) {
+        
+        var message = ""
+        
+        if success {
+            message = "Authorization successful!"
+            
+        } else {
+            message = "Autorization failed!"
+        }
+        
+        let alertMessagePopUpBox = UIAlertController(title: "Authorization", message: message, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "OK", style: .default)
+        
+        alertMessagePopUpBox.addAction(okButton)
+        
+        self.present(alertMessagePopUpBox, animated: true)
+    }
 
+}
