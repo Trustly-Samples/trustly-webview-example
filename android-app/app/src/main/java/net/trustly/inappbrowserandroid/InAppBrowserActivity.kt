@@ -31,7 +31,7 @@ class InAppBrowserActivity : AppCompatActivity() {
         establishDataValues["requestSignature"] = "REQUEST_SIGNATURE"
         establishDataValues["paymentType"] = "Retrieval"
         establishDataValues["env"] = "sandbox"
-        establishDataValues["grp"] = "<GRP>"
+        establishDataValues["grp"] = "GRP"
         establishDataValues["paymentProviderId"] = "PAYMENT_PROVIDER_ID"
         establishDataValues["description"] = "Android InAppBrowser"
         establishDataValues["localUrl"] = "YOUR LOCAL URL WHEN `ENV` PROPERTY IS `LOCAL` (ex: https://192.168.0.30)"
