@@ -24,6 +24,21 @@
   -->
   <script src="https://sandbox.trustly.one/start/scripts/trustly.js?accessId=%REACT_APP_TRUSTLY_ACCESS_ID%"></script>
   <title>Trustly Starter App</title>
+  <style>
+    body, #root {
+      background-color: #ffffff;
+      color: #000000;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Dark theme */
+    @media (prefers-color-scheme: dark) {
+      body, #root {
+        background-color: #000000;
+        color: #ffffff;
+      }
+    }
+  </style>
 </head>
 
 <body>
