@@ -60,11 +60,13 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
 
               if #available(iOS 13, *) {
                   self.buildASWebAuthenticationSession(url: url, callbackURL: "in-app-browser-ios")
-
               } else {
                   // handle iOS =<12 with SFAuthenticationSession
               }
           }
+            
+          webView.load(navigationAction.request)
+
         }
 
         return nil
